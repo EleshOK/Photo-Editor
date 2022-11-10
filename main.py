@@ -20,7 +20,7 @@ class Window():
 
         # buttons
 
-        self.button_upload_photo = Button(self.display, text='Upload')
+        self.button_upload_photo = Button(self.display, text='Upload', command=self.open_file)
         self.button_upload_photo.grid(row=2, columnspan=4)
         # self.button_upload_photo.place(x=265, y=550)
         
@@ -49,10 +49,10 @@ class Window():
         global img_path, img
         img_path = filedialog.askopenfilename(initialdir=os.getcwd())
         img = Image.open(img_path)
-        img.thumbnail((350, 350))
+        img.thumbnail((600, 600))
         img1 = ImageTk.PhotoImage(img)
-        Window.self.canvas.create_image(300, 210, image=img1)
-        Window.self.canvas.image = img1
+        self.canvas.create_image(300, 210, image=img1)
+        self.canvas.image = img1
 
     def rotate_left(self):
         pass
@@ -61,7 +61,15 @@ class Window():
         pass
 
     def brightness(self):
-        pass
+        global img_path, img2, img3
+        for m in range(0, v2.get()+1):
+            img = Image.open(img_path)
+        img.thumbnail((350, 350))
+        imgg = ImageEnhance.Brightness(img)
+        img2 = imgg.enhance(m)
+        img3 = ImageTk.PhotoImage(img2)
+        canvas2.create_image(300, 210, image=img3)
+        canvas2.image = img3
 
 
     
