@@ -18,26 +18,27 @@ class Window():
         self.display.columnconfigure(4, minsize=30)
         self.display.configure(borderwidth=0)
 
-        # buttons
+        # buttons and more
 
         self.button_upload_photo = Button(self.display, text='Upload', command=self.open_file)
         self.button_upload_photo.grid(row=2, columnspan=4)
-        # self.button_upload_photo.place(x=265, y=550)
         
         self.button_rotate_left = Button(self.display, text='Rotate left', command=self.rotate_left)
         self.button_rotate_left.grid(row=0, column=2)
-        # self.button_rotate_left.place(x=550, y=20)
 
         self.button_rotate_right = Button(self.display, text='Rotate right', command=self.rotate_right)
         self.button_rotate_right.grid(row=0, column=3)
-        # self.button_rotate_right.place(x=500, y=20)
         
-        self.button_brightness = Button(self.display, text='Brightness', command=self.brightness)
-        self.button_brightness.grid(row=0, column=0)
-        # self.button_brightness.place(x=20, y=20)
-        self.canvas = Canvas(self.display, width=600, height=530, bg='red', highlightthickness = 0)
+        self.text_bright = Label(self.display, text="Brightness:", font=("ariel 10 bold"))
+        self.text_bright.grid(row=0, column=0)
+
+        self.v2 = IntVar()
+
+        self.scale2 = ttk.Scale(self.display, from_=0, to=20, variable=self.v2,
+                   orient=HORIZONTAL, command=self.brightness)
+
+        self.canvas = Canvas(self.display, width=600, height=530, highlightthickness = 0)
         self.canvas.grid(row=1, columnspan=4)
-        # self.canvas.place(y=20, x=0)
 
         # permanent operation of the window
 
@@ -51,7 +52,7 @@ class Window():
         img = Image.open(img_path)
         img.thumbnail((600, 600))
         img1 = ImageTk.PhotoImage(img)
-        self.canvas.create_image(300, 210, image=img1)
+        self.canvas.create_image(300, 250, image=img1)
         self.canvas.image = img1
 
     def rotate_left(self):
@@ -62,14 +63,14 @@ class Window():
 
     def brightness(self):
         global img_path, img2, img3
-        for m in range(0, v2.get()+1):
+        for m in range(0, self.v2.get()+1):
             img = Image.open(img_path)
         img.thumbnail((350, 350))
         imgg = ImageEnhance.Brightness(img)
         img2 = imgg.enhance(m)
         img3 = ImageTk.PhotoImage(img2)
-        canvas2.create_image(300, 210, image=img3)
-        canvas2.image = img3
+        self.canvas.create_image(300, 210, image=img3)
+        self.canvas.image = img3
 
 
     
