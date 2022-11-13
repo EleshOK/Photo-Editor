@@ -36,6 +36,8 @@ class Window():
 
         self.scale2 = ttk.Scale(self.display, from_=0, to=20, variable=self.v2,
                    orient=HORIZONTAL, command=self.brightness)
+        
+        self.scale2.grid(row=0, column=1)
 
         self.canvas = Canvas(self.display, width=600, height=530, highlightthickness = 0)
         self.canvas.grid(row=1, columnspan=4)
