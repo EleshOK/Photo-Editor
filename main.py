@@ -41,6 +41,10 @@ class Window():
 
         self.canvas = Canvas(self.display, width=600, height=530, highlightthickness = 0)
         self.canvas.grid(row=1, columnspan=4)
+        self.current_rotation = 0
+        self.direction_rotation = None
+        self.image = None
+        self.img_path = None
 
         # permanent operation of the window
 
@@ -49,30 +53,46 @@ class Window():
 # functions for buttons
 
     def open_file(self):
-        global img_path, img
-        img_path = filedialog.askopenfilename(initialdir=os.getcwd())
-        img = Image.open(img_path)
+
+        self.img_path = filedialog.askopenfilename(initialdir=os.getcwd())
+        img = Image.open(self.img_path)
         img.thumbnail((600, 600))
-        img1 = ImageTk.PhotoImage(img)
-        self.canvas.create_image(300, 250, image=img1)
-        self.canvas.image = img1
+        self.image = ImageTk.PhotoImage(img)
+        self.canvas.create_image(300, 250, image=self.image)
+        self.canvas.image = self.image
+
+    def rotate_image(self):
+        if not self.direction_rotation:
+            return
+        img = Image.open(self.img_path)
+        img.thumbnail((600, 600))
+        if self.direction_rotation == 'Left':
+            self.current_rotation += 10
+            img6 = img.rotate(self.current_rotation)
+        elif self.direction_rotation == 'Right':
+            self.current_rotation -= 10
+            img6 = img.rotate(self.current_rotation)
+        self.image = ImageTk.PhotoImage(img6)
+        self.canvas.create_image(300, 210, image=self.image)
+        self.canvas.image = self.image
+
 
     def rotate_left(self):
-        pass
+        self.direction_rotation = 'Left'
+        self.rotate_image()
 
     def rotate_right(self):
-        pass
+        self.direction_rotation = 'Right'
+        self.rotate_image()
 
-    def brightness(self):
-        global img_path, img2, img3
+    def brightness(self, event):
         for m in range(0, self.v2.get()+1):
-            img = Image.open(img_path)
-        img.thumbnail((350, 350))
-        imgg = ImageEnhance.Brightness(img)
-        img2 = imgg.enhance(m)
-        img3 = ImageTk.PhotoImage(img2)
-        self.canvas.create_image(300, 210, image=img3)
-        self.canvas.image = img3
+            self.image.thumbnail((600, 600))
+            imgg = ImageEnhance.Brightness(self.image)
+            img2 = imgg.enhance(m)
+            self.image = ImageTk.PhotoImage(img2)
+            self.canvas.create_image(300, 210, image=self.image)
+            self.canvas.image = self.image
 
 
     
